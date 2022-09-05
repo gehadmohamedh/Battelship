@@ -1,0 +1,65 @@
+#pragma once
+#include "Ship.h"
+#include "Network.h"
+#include "BoardSetup.h"
+#include <iostream>
+#include <vector>
+#include <sstream>
+#include"HitMechanism.h"
+using namespace std;
+
+pair<int, int> getCoordinatesFromString(string data) {
+	stringstream s;
+	s << data;
+	int x, y;
+	s >> x >> y;
+	return make_pair(x, y);
+}
+
+void GamePlay(bool myBoard[10][10], int myBoardHits[10][10], int oppBoardHits[10][10], vector<Ship>& v, sf::TcpSocket& socket)
+{
+	bool myTurn = true;
+
+	int RemainingShips = v.size();
+
+	if (myTurn)
+	{
+
+	}
+	else
+	{
+		
+	  string data = wait_for_data(socket);
+	  pair <int , int > coordinates =  getCoordinatesFromString(data);
+	  int x = coordinates.first;
+	  int y = coordinates.second;
+
+
+
+	  if (myBoard[x][y]) 
+	  {
+		  myBoardHits[x][y] = 1;
+		  send_over_network(socket, "SUCCESS");
+		  CheckShips(v, myBoardHits, RemainingShips);
+
+		  if (RemainingShips == 0)
+
+		  {
+			  send_over_network(socket, "WON");
+			  cout << "Defeated :(";
+		  }
+		  else
+		  {
+			  send_over_network(socket, "Not Yet");
+		  } 
+	  }
+	  else {
+		  myBoardHits[x][y] = 0;
+		  send_over_network(socket, "you missed me");
+	  }
+
+	  
+
+	}
+
+}

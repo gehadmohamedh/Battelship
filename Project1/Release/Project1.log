@@ -1,0 +1,2 @@
+﻿  Source.cpp
+g:\mahmouds universty stuff\battleship\project1-final\project1\gamesetup.h(1): fatal error C1083: Cannot open include file: 'SFML/Graphics.hpp': No such file or directory
